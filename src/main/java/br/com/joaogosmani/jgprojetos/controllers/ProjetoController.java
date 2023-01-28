@@ -1,7 +1,11 @@
 package br.com.joaogosmani.jgprojetos.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,7 +73,15 @@ public class ProjetoController {
     }
 
     @PostMapping({"/cadastrar", "/{id}/editar"})
-    public String salvar(Projeto projeto) {
+    public String salvar(@Valid Projeto projeto, BindingResult resultado, ModelMap model) {
+        if (resultado.hasErrors()) {
+            model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("lideres", funcionarioRepository.findByCargoNome("Gerente"));
+            model.addAttribute("funcionarios", funcionarioRepository.findByCargoNomeNot("Gerente"));
+
+            return "projeto/formulario";
+        }
+        
         projetoRepository.save(projeto);
 
         return "redirect:/projetos";
