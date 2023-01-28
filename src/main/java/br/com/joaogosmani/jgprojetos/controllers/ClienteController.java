@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.joaogosmani.jgprojetos.enums.UF;
 import br.com.joaogosmani.jgprojetos.models.Cliente;
 import br.com.joaogosmani.jgprojetos.repositories.ClienteRepository;
 import br.com.joaogosmani.jgprojetos.validators.ClienteValidator;
@@ -54,7 +53,6 @@ public class ClienteController {
         ModelAndView modelAndView = new ModelAndView("cliente/formulario");
 
         modelAndView.addObject("cliente", new Cliente());
-        modelAndView.addObject("ufs", UF.values());
 
         return modelAndView;
     }
@@ -64,7 +62,6 @@ public class ClienteController {
         ModelAndView modelAndView = new ModelAndView("cliente/formulario");
 
         modelAndView.addObject("cliente", clienteRepository.getOne(id));
-        modelAndView.addObject("ufs", UF.values());
 
         return modelAndView;
     }
@@ -72,8 +69,6 @@ public class ClienteController {
     @PostMapping({"/cadastrar", "/{id}/editar"})
     public String salvar(@Valid Cliente cliente, BindingResult resultado, ModelMap model) {
         if (resultado.hasErrors()) {
-            model.addAttribute("ufs", UF.values());
-
             return "cliente/formulario";
         }
 

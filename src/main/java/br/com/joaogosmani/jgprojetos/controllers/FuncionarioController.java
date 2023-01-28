@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.joaogosmani.jgprojetos.enums.UF;
 import br.com.joaogosmani.jgprojetos.models.Funcionario;
 import br.com.joaogosmani.jgprojetos.repositories.CargoRepository;
 import br.com.joaogosmani.jgprojetos.repositories.FuncionarioRepository;
@@ -60,7 +59,6 @@ public class FuncionarioController {
 
         modelAndView.addObject("funcionario", new Funcionario());
         modelAndView.addObject("cargos", cargoRepository.findAll());
-        modelAndView.addObject("ufs", UF.values());
 
         return modelAndView;
     }
@@ -71,7 +69,6 @@ public class FuncionarioController {
 
         modelAndView.addObject("funcionario", funcionarioRepository.getOne(id));
         modelAndView.addObject("cargos", cargoRepository.findAll());
-        modelAndView.addObject("ufs", UF.values());
 
         return modelAndView;
     }
@@ -79,11 +76,11 @@ public class FuncionarioController {
     @PostMapping("/cadastrar")
     public String cadastrar(@Valid Funcionario funcionario, BindingResult resultado, ModelMap model) {
         if (resultado.hasErrors()) {
-                model.addAttribute("cargos", cargoRepository.findAll());
-                model.addAttribute("ufs", UF.values());
+            model.addAttribute("cargos", cargoRepository.findAll());
 
             return "funcionario/formulario";
         }
+
         String senhaEncriptada = SenhaUtils.encode(funcionario.getSenha());
 
         funcionario.setSenha(senhaEncriptada);
@@ -96,7 +93,6 @@ public class FuncionarioController {
     public String editar(Funcionario funcionario, BindingResult resultado, @PathVariable Long id, ModelMap model) {
         if (resultado.hasErrors()) {
             model.addAttribute("cargos", cargoRepository.findAll());
-            model.addAttribute("ufs", UF.values());
 
             return "funcionario/formulario";
         }
