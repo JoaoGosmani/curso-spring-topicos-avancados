@@ -20,6 +20,7 @@ import br.com.joaogosmani.jgprojetos.repositories.CargoRepository;
 import br.com.joaogosmani.jgprojetos.repositories.FuncionarioRepository;
 import br.com.joaogosmani.jgprojetos.utils.SenhaUtils;
 import br.com.joaogosmani.jgprojetos.validators.FuncionarioValidator;
+import br.com.joaogosmani.jgprojetos.validators.PessoaValidator;
 
 @Controller
 @RequestMapping("/funcionarios")
@@ -34,6 +35,7 @@ public class FuncionarioController {
     @InitBinder("funcionario")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(new FuncionarioValidator(funcionarioRepository));
+        binder.addValidators(new PessoaValidator());
     }
 
     @GetMapping
