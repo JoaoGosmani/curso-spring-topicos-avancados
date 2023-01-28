@@ -1,7 +1,11 @@
 package br.com.joaogosmani.jgprojetos.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,7 +69,13 @@ public class FuncionarioController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(Funcionario funcionario) {
+    public String cadastrar(@Valid Funcionario funcionario, BindingResult resultado, ModelMap model) {
+        if (resultado.hasErrors()) {
+                model.addAttribute("cargos", cargoRepository.findAll());
+                model.addAttribute("ufs", UF.values());
+
+            return "funcionario/formulario";
+        }
         String senhaEncriptada = SenhaUtils.encode(funcionario.getSenha());
 
         funcionario.setSenha(senhaEncriptada);
@@ -75,7 +85,14 @@ public class FuncionarioController {
     }
 
     @PostMapping("/{id}/editar")
-    public String editar(Funcionario funcionario, @PathVariable Long id) {
+    public String editar(Funcionario funcionario, BindingResult resultado, @PathVariable Long id, ModelMap model) {
+        if (resultado.hasErrors()) {
+            model.addAttribute("cargos", cargoRepository.findAll());
+            model.addAttribute("ufs", UF.values());
+
+            return "funcionario/formulario";
+        }
+        
         String senhaAtual = funcionarioRepository.getOne(id).getSenha();
         funcionario.setSenha(senhaAtual);
 
