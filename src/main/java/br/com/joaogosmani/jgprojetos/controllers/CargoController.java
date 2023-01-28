@@ -1,7 +1,10 @@
 package br.com.joaogosmani.jgprojetos.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +49,11 @@ public class CargoController {
     }
 
     @PostMapping({"/cadastrar", "/{id}/editar"})
-    public String salvar(Cargo cargo) {
+    public String salvar(@Valid Cargo cargo, BindingResult resultado) {
+        if (resultado.hasErrors()) {
+            return "cargo/formulario";
+        }
+
         cargoRepository.save(cargo);
 
         return "redirect:/cargos";

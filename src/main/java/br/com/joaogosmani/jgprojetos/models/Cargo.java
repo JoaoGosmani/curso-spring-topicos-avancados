@@ -2,10 +2,16 @@ package br.com.joaogosmani.jgprojetos.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Cargo extends Entidade {
     
+    @NotNull
+    @Size(min = 3, max = 40)
     @Column(nullable = false, length = 40, unique = true)
     private String nome;
 
