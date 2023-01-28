@@ -1,7 +1,11 @@
 package br.com.joaogosmani.jgprojetos.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,7 +62,13 @@ public class ClienteController {
     }
 
     @PostMapping({"/cadastrar", "/{id}/editar"})
-    public String salvar(Cliente cliente) {
+    public String salvar(@Valid Cliente cliente, BindingResult resultado, ModelMap model) {
+        if (resultado.hasErrors()) {
+            model.addAttribute("ufs", UF.values());
+
+            return "cliente/formulario";
+        }
+
         clienteRepository.save(cliente);
 
         return "redirect:/clientes";
