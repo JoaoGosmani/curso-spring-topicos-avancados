@@ -40,7 +40,6 @@ public class Funcionario extends Pessoa {
     @ManyToMany(mappedBy = "equipe")
     private List<Projeto> projetos;
 
-    @NotNull
     @Size(min = 5, max = 255)
     @Column(nullable = false)
     private String senha;
