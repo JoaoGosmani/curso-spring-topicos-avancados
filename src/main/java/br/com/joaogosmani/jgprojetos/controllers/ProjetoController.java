@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.joaogosmani.jgprojetos.dto.AlertDTO;
 import br.com.joaogosmani.jgprojetos.models.Projeto;
 import br.com.joaogosmani.jgprojetos.repositories.ClienteRepository;
 import br.com.joaogosmani.jgprojetos.repositories.FuncionarioRepository;
@@ -73,7 +75,7 @@ public class ProjetoController {
     }
 
     @PostMapping({"/cadastrar", "/{id}/editar"})
-    public String salvar(@Valid Projeto projeto, BindingResult resultado, ModelMap model) {
+    public String salvar(@Valid Projeto projeto, BindingResult resultado, ModelMap model, RedirectAttributes attrs) {
         if (resultado.hasErrors()) {
             model.addAttribute("clientes", clienteRepository.findAll());
             model.addAttribute("lideres", funcionarioRepository.findByCargoNome("Gerente"));
@@ -82,14 +84,21 @@ public class ProjetoController {
             return "projeto/formulario";
         }
         
+        if (projeto.getId() == null) {
+            attrs.addFlashAttribute("alert", new AlertDTO("Projeto cadastrado com sucesso!", "alert-success"));
+        } else {
+            attrs.addFlashAttribute("alert", new AlertDTO("Projeto editado com sucesso!", "alert-success"));
+        }
+        
         projetoRepository.save(projeto);
-
+        
         return "redirect:/projetos";
     }
 
     @GetMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable Long id, RedirectAttributes attrs) {
         projetoRepository.deleteById(id);
+        attrs.addFlashAttribute("alert", new AlertDTO("Projeto excluido com sucesso!", "alert-success"));
 
         return "redirect:/projetos";
     }

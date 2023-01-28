@@ -1,6 +1,6 @@
-package br.com.joaogosmani.jgprojetos.dao;
+package br.com.joaogosmani.jgprojetos.dto;
 
-public class AlterarSenhaDAO {
+public class AlterarSenhaDTO {
     
     private String senhaAtual;
 

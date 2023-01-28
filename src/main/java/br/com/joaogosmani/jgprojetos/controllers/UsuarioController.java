@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.joaogosmani.jgprojetos.dao.AlterarSenhaDAO;
+import br.com.joaogosmani.jgprojetos.dto.AlertDTO;
+import br.com.joaogosmani.jgprojetos.dto.AlterarSenhaDTO;
 import br.com.joaogosmani.jgprojetos.models.Funcionario;
 import br.com.joaogosmani.jgprojetos.repositories.FuncionarioRepository;
 import br.com.joaogosmani.jgprojetos.utils.SenhaUtils;
@@ -30,18 +32,23 @@ public class UsuarioController {
 
         Funcionario usuario = funcionarioRepository.findByEmail(principal.getName()).get();
         modelAndView.addObject("usuario", usuario);
-        modelAndView.addObject("alterarSenhaForm", new AlterarSenhaDAO());
+        modelAndView.addObject("alterarSenhaForm", new AlterarSenhaDTO());
 
         return modelAndView;
     }
 
     @PostMapping("/alterar-senha")
-    public String alterarSenha(AlterarSenhaDAO form, Principal principal) {
+    public String alterarSenha(AlterarSenhaDTO form, Principal principal, RedirectAttributes attrs) {
         Funcionario usuario = funcionarioRepository.findByEmail(principal.getName()).get();
 
         if (SenhaUtils.matches(form.getSenhaAtual(), usuario.getSenha())) {
             usuario.setSenha(SenhaUtils.encode(form.getNovaSenha()));
+
             funcionarioRepository.save(usuario);
+
+            attrs.addFlashAttribute("alert", new AlertDTO("Senha alterada com sucesso!", "alert-success"));
+        } else {
+            attrs.addFlashAttribute("alert", new AlertDTO("Senha atual está incorreta!", "alert-danger"));
         }
 
         return "redirect:/perfil";
