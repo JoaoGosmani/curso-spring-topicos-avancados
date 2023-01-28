@@ -18,7 +18,6 @@ import br.com.joaogosmani.jgprojetos.enums.UF;
 import br.com.joaogosmani.jgprojetos.models.Cliente;
 import br.com.joaogosmani.jgprojetos.repositories.ClienteRepository;
 import br.com.joaogosmani.jgprojetos.validators.ClienteValidator;
-import br.com.joaogosmani.jgprojetos.validators.PessoaValidator;
 
 @Controller
 @RequestMapping("/clientes")
@@ -30,7 +29,6 @@ public class ClienteController {
     @InitBinder("cliente")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(new ClienteValidator(clienteRepository));
-        binder.addValidators(new PessoaValidator());
     }
 
     @GetMapping
