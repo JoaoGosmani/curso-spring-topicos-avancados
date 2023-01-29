@@ -26,6 +26,14 @@ public class FuncionarioService {
         return funcionarioRepository.findAll();
     }
 
+    public List<Funcionario> buscarLideres() {
+        return funcionarioRepository.findByCargoNome("Gerente");
+    }
+
+    public List<Funcionario> buscarEquipe() {
+        return funcionarioRepository.findByCargoNomeNot("Gerente");
+    }
+
     public Funcionario buscarPorId(Long id) {
         return funcionarioRepository.findById(id)
             .orElseThrow(() -> new FuncionarioNaoEncontradoException(id));
