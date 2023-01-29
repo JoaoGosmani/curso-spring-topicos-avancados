@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.joaogosmani.jgprojetos.dto.AlertDTO;
 import br.com.joaogosmani.jgprojetos.exceptions.FuncionarioEhLiderDeProjeto;
 import br.com.joaogosmani.jgprojetos.models.Funcionario;
-import br.com.joaogosmani.jgprojetos.repositories.FuncionarioRepository;
 import br.com.joaogosmani.jgprojetos.services.CargoService;
 import br.com.joaogosmani.jgprojetos.services.FuncionarioService;
 import br.com.joaogosmani.jgprojetos.validators.FuncionarioValidator;
@@ -26,9 +25,6 @@ import br.com.joaogosmani.jgprojetos.validators.FuncionarioValidator;
 @Controller
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
-    
-    @Autowired
-    private FuncionarioRepository funcionarioRepository;
 
     @Autowired
     private CargoService cargoService;
@@ -36,9 +32,12 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @Autowired
+    private FuncionarioValidator funcionarioValidator;
+
     @InitBinder("funcionario")
     public void initBinder(WebDataBinder binder) {
-        binder.addValidators(new FuncionarioValidator(funcionarioRepository));
+        binder.addValidators(funcionarioValidator);
     }
 
     @GetMapping
