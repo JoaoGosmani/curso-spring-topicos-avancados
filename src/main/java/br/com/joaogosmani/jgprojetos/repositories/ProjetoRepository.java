@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.joaogosmani.jgprojetos.models.Cliente;
+import br.com.joaogosmani.jgprojetos.models.Funcionario;
 import br.com.joaogosmani.jgprojetos.models.Projeto;
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
@@ -14,5 +15,7 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
     List<Projeto> findAll();
 
     List<Projeto> findByCliente(Cliente cliente);
+
+    List<Projeto> findByLider(Funcionario lider);
 
 }
